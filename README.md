@@ -1,11 +1,17 @@
 # Horizontal Minimap
 Angular Directive for creating a horizontal scrollable minimap
 
-Parameters are: 
+@Todo
+
+Implement as Parameters
 heightRatio
 widthRatio
 offsetWidthRatio
-offsetHeightRatio:
+offsetHeightRatio
 smoothScroll (true/false)
 smoothScrollDelay
 dragDiagram (true/false)
+
+remove Jquery Dependency
+
+add Demo
