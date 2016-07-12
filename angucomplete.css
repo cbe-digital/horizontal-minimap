@@ -1,0 +1,36 @@
+.container-minimap {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.minimap-box {
+  height: 70px;
+  position : absolute;
+  z-index : 10;
+  cursor: pointer;
+  font-size: 1em;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+}
+.miniregion {
+  z-index : 11;
+  background : transparent;
+  border: 2px solid $green;
+  cursor: pointer;
+}
+
+.miniregion:hover {
+  @include box-shadow(0 0 0.4em darkgrey);
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

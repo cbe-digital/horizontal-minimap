@@ -166,6 +166,8 @@ h1 {
 .row {
     margin-top: 10px;
     display: block;
+    float: left;
+    width: 300px;
 }
 
 .text-centered {

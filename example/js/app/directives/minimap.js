@@ -59,12 +59,12 @@ angular.module('CbeHorizontalMinimap', [])
      $miniMap.css(css);
      $wrapper.css('width', width);
 
-     var regionLeft = $miniMap.getBoundingClientRect().left * s.x;
+     var regionLeft = $miniMap.scrollLeft * s.x;
      var cssRegion = {
-          width : $parent.width() * s.x,
-          height : $wrapper.height() - 2 +'px',
+          width : $parent.clientWidth * s.x,
+          height : $wrapper.clientHeight - 2 +'px',
           margin : '0px',
-          left : $parent.scrollLeft() * s.x  + 'px',
+          left : $parent.scrollLeft * s.x  + 'px',
           position: 'absolute'
 
       };
@@ -75,8 +75,9 @@ angular.module('CbeHorizontalMinimap', [])
 
   var onScrollHandler = function(e) {
       var s = scale();
+      console.log($parent);
       $region.css({
-              left : $parent.scrollLeft() * s.x  + 'px'
+              left : $parent.scrollLeft * s.x  + 'px'
            });
 
   };
@@ -85,18 +86,18 @@ angular.module('CbeHorizontalMinimap', [])
       return;
     }
     var s = scale();
-    var left = $parent.scrollLeft() * s.x ;
-    var offsetLeft = $region.width() /2;
+    var left = $parent.scrollLeft * s.x ;
+    var offsetLeft = $region.clientWidth /2;
     var target;
     if(angular.element(e.currentTarget).hasClass('diagram') && e.type !== 'click'){
       target = $parent.scrollLeft() + (downX - e.clientX) / 12;
     }
     else {
-      target = (e.clientX - $region.offset().left + left - offsetLeft) / s.x;
+      target = (e.clientX - $region.scrollLeft + left - offsetLeft) / s.x;
     }
 
     if(e.type === 'click' && settings.smoothScroll) {
-        var current = $parent.scrollLeft();
+        var current = $parent.scrollLeft;
         var maxTarget =  $miniMap.outerWidth(true) - $parent.width();
 
         target = Math.max(target, Math.min(target, maxTarget));
@@ -130,12 +131,12 @@ angular.module('CbeHorizontalMinimap', [])
                 next = target;
             }
 
-            $parent.scrollLeft(next);
+            $parent.scrollLeft = next;
         };
 
         var timer = $interval(smoothScroll, unitDelay);
     } {
-        $parent.scrollLeft(target);
+        $parent.scrollLeft = target;
     }
     if(e.stopPropagation !== undefined){
       e.stopPropagation();
@@ -165,23 +166,27 @@ angular.module('CbeHorizontalMinimap', [])
 
   return ({
     transclude: true,
+    template: '<div class="original" ng-transclude></div>',
     link: function($scope, $element, $attrs, $ctrl, $transclude) {
       $wrapper = angular.element('<div class="minimap-box"></div>');
 
       var parent = $transclude($scope.$new(), function(clone){
-        $element.append(angular.element(clone));
-        $element.after($wrapper);
+              $element.append($wrapper);
+
       });
 
       // -- the original
-      $parent = angular.element(parent[1]);
+      $parent = $element.children(1);
+      var containerWidth = 0;
+      angular.forEach($parent.children(), function(v,k){
+          containerWidth += v.clientWidth;
+      });
+      $parent.css('width', containerWidth + 'px');
 
       var minimap =  $transclude($scope.$new(), function(clone){
-        $element.removeClass('diagram').addClass('minimap');
-        $wrapper.append(angular.element(clone));
-        $wrapper.children().removeClass('diagram').addClass('minimap');
-        angular.element(clone[1]).addClass('minimap noselect');
 
+        $wrapper.append(angular.element(clone));
+        $wrapper.children().addClass('minimap noselect');
         // --  remove events
         angular.forEach(angular.element(clone[1]).children(), function(v,k){
           angular.element(v).css({'pointer-events': 'none'});
@@ -190,16 +195,16 @@ angular.module('CbeHorizontalMinimap', [])
       });
       // -- the minimap
       $miniMap = angular.element(minimap[1]);
-
+      // console.log($miniMap);
       // -- the visible area
       $wrapper.append('<div class="miniregion"></div>');
       $region = angular.element(document.getElementsByClassName('miniregion'));
 
       onResizeHandler();
 
-      $window.on('resize', onResizeHandler);
-      $window.on('mouseup', onMouseupHandler);
-      $parent.on('scroll', onScrollHandler);
+      angular.element(window).on('resize', onResizeHandler);
+      angular.element(window).on('mouseup', onMouseupHandler);
+      angular.element(window).on('scroll', onScrollHandler);
 
       if(settings.dragDiagram) {
         $parent.on('mousedown', onMousedownHandler);

@@ -1,6 +1,12 @@
 (function( window, $, undefined ){
 "use strict";
-window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function($interval, $window) {
+/**
+ * Horizontal Minimap
+ * Horizontal Minimap for AngularJS
+ */
+
+angular.module('cbeHorizontalMinimap', [])
+  .directive('horizontalMinimap', ['$interval' , '$window', function($interval, $window) {
   var $miniMap,
       $parent,
       $region,
@@ -70,7 +76,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
   var onScrollHandler = function(e) {
       var s = scale();
       $region.css({
-              left : $parent.scrollLeft() * s.x  + 'px' 
+              left : $parent.scrollLeft() * s.x  + 'px'
            });
 
   };
@@ -84,7 +90,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
     var target;
     if(angular.element(e.currentTarget).hasClass('diagram') && e.type !== 'click'){
       target = $parent.scrollLeft() + (downX - e.clientX) / 12;
-    } 
+    }
     else {
       target = (e.clientX - $region.offset().left + left - offsetLeft) / s.x;
     }
@@ -112,7 +118,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
 
         var next = current;
         var count = parseInt(distance / unitScroll ) ;
-   
+
         onSmoothScroll = true;
 
         // linear translate
@@ -134,7 +140,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
     if(e.stopPropagation !== undefined){
       e.stopPropagation();
     }
-      
+
   };
 
   var onMouseupHandler = function(e) {
@@ -144,7 +150,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
   var onMousemoveHandler = function(e) {
       if(!mousedown || onSmoothScroll) return;
       scrollToPosition(e);
-   
+
   };
 
   var onClickHandler = function(e) {
@@ -174,7 +180,7 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
         $wrapper.append(angular.element(clone));
         $wrapper.children().removeClass('diagram').addClass('minimap');
         angular.element(clone[1]).addClass('minimap noselect');
-        // --  remove events 
+        // --  remove events
         angular.element(clone[1]).children().each(function() {$(this).css({'pointer-events': 'none'});});
 
       });
@@ -211,4 +217,4 @@ window.nepProcessApp.directive('nepMinimap', ['$interval' , '$window', function(
 
   });
 }]);
-}(window, jQuery)); 
+}(window, jQuery));

@@ -3,7 +3,7 @@ Angular Directive for creating a horizontal scrollable minimap
 
 @Todo
 
-Implement as Parameters
+- Implement as Parameters
 heightRatio
 widthRatio
 offsetWidthRatio
