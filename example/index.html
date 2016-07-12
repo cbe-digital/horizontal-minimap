@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Horizontal Minimap</title>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+        <link rel="stylesheet" href="css/structure.css"/>
+        <link rel="stylesheet" href="css/angucomplete.css"/>
+        <link rel="stylesheet" href="fonts/bariol/bariol.css"/>
+    </head>
+  <body ng-app="app">
+    <div class="container" ng-controller="MainController">
+      <h1>Horizontal Minimap</h1>
+      <h2> Provides a minimap for navigation horizontal.</h2>
+      <div class="container-minimap" cbe-horizontal-minimap>
+        <div class="jumbotron-red">
+          <h3>Step 1 - Countries</h3>
+        </div>
+        <div class="jumbotron-green">
+          <h3>Step 2 - People</h3>
+        </div>
+        <div class="jumbotron-red">
+          <h2>How to use</h2>
+          <p>Head over to the GitHub pages <a href="http://github.com/darylrowland/angucomplete">here</a> to grab the code and read the documentation on how to use this.
+          </p>
+          <p>You are free to use this code as you see fit. I'm realising it under a completely open license and can't wait to see what you do with it!
+          </p>
+        </div>
+      </div>
+
+      <script src="js/angular.min.js"></script>
+      <script src="js/angular-touch.min.js"></script>
+      <script src="js/app/app.js"></script>
+      <script src="js/app/controllers/main-controller.js"></script>
+      <script src="js/app/directives/minimap.js"></script>
+    </div>
+  </body>
+</html>
